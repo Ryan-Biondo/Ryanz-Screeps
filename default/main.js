@@ -1,8 +1,15 @@
 let roleHarvester = require("role.harvester");
 let roleUpgrader = require("role.upgrader");
 let roleBuilder = require("role.builder");
+let towerControl = require("towerControl");
 
 module.exports.loop = function () {
+  let towers = _.filter(
+    Game.structures,
+    (s) => s.structureType === STRUCTURE_TOWER
+  );
+  towers.forEach((tower) => towerControl.run(tower));
+
   if (Game.time % 10 === 0) {
     for (let name in Game.rooms) {
       console.log(
@@ -95,27 +102,6 @@ module.exports.loop = function () {
   //     Game.spawns['Spawn1'].spawnCreep( [WORK,WORK,CARRY,MOVE,MOVE], newName,
   //     { memory: { role: 'builder' } } );
   // }
-
-  const towers = _.filter(
-    Game.structures,
-    (s) => s.structureType === STRUCTURE_TOWER
-  );
-  towers.forEach((tower) => {
-    let closestDamagedStructure = tower.pos.findClosestByRange(
-      FIND_STRUCTURES,
-      {
-        filter: (structure) => structure.hits < structure.hitsMax,
-      }
-    );
-    if (closestDamagedStructure) {
-      tower.repair(closestDamagedStructure);
-    }
-
-    let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-    if (closestHostile) {
-      tower.attack(closestHostile);
-    }
-  });
 };
 
 // console.log(JSON.stringify(Game.spawns, null, 2));
