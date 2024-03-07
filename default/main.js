@@ -13,12 +13,11 @@ module.exports.loop = function () {
           " energy"
       );
     }
-  }
-
-  for (let name in Memory.creeps) {
-    if (!Game.creeps[name]) {
-      delete Memory.creeps[name];
-      console.log("Clearing non-existing creep memory:", name);
+    for (let name in Memory.creeps) {
+      if (!Game.creeps[name]) {
+        delete Memory.creeps[name];
+        console.log("Clearing non-existing creep memory:", name);
+      }
     }
   }
 
@@ -34,6 +33,19 @@ module.exports.loop = function () {
     Game.creeps,
     (creep) => creep.memory.role == "builder"
   );
+
+  for (let name in Game.creeps) {
+    let creep = Game.creeps[name];
+    if (creep.memory.role == "harvester") {
+      roleHarvester.run(creep);
+    }
+    if (creep.memory.role == "upgrader") {
+      roleUpgrader.run(creep);
+    }
+    if (creep.memory.role == "builder") {
+      roleBuilder.run(creep);
+    }
+  }
 
   if (harvesters.length < 2) {
     let newName = "Harvester" + Game.time;
@@ -84,8 +96,11 @@ module.exports.loop = function () {
   //     { memory: { role: 'builder' } } );
   // }
 
-  let tower = Game.getObjectById("TOWER_ID");
-  if (tower) {
+  const towers = _.filter(
+    Game.structures,
+    (s) => s.structureType === STRUCTURE_TOWER
+  );
+  towers.forEach((tower) => {
     let closestDamagedStructure = tower.pos.findClosestByRange(
       FIND_STRUCTURES,
       {
@@ -100,18 +115,8 @@ module.exports.loop = function () {
     if (closestHostile) {
       tower.attack(closestHostile);
     }
-  }
-
-  for (let name in Game.creeps) {
-    let creep = Game.creeps[name];
-    if (creep.memory.role == "harvester") {
-      roleHarvester.run(creep);
-    }
-    if (creep.memory.role == "upgrader") {
-      roleUpgrader.run(creep);
-    }
-    if (creep.memory.role == "builder") {
-      roleBuilder.run(creep);
-    }
-  }
+  });
 };
+
+// console.log(JSON.stringify(Game.spawns, null, 2));
+// console.log(JSON.stringify(Memory.creeps, null, 2));
