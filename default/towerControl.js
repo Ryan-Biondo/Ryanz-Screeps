@@ -1,11 +1,11 @@
 const towerControl = {
   run: function (tower) {
     // Attack hostiles
-    // let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-    // if (closestHostile) {
-    //   tower.attack(closestHostile);
-    //   return;
-    // }
+    let closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+    if (closestHostile) {
+      tower.attack(closestHostile);
+      return;
+    }
 
     // Heal creeps
     let closestDamagedCreep = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
