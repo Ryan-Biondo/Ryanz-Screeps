@@ -57,7 +57,7 @@ module.exports.loop = function () {
 
   // Add a Hauler role with CARRY and MOVE
 
-  if (harvesters.length < 7) {
+  if (harvesters.length < 10) {
     let newName = "HarvesterBig" + Game.time;
     console.log("Harvesters: " + harvesters.length);
     console.log("Spawning new harvester: " + newName);
@@ -102,7 +102,7 @@ module.exports.loop = function () {
   //      });
   //   }
 
-  if (upgraders.length < 2) {
+  if (upgraders.length < 4) {
     let newName = "UpgraderBig" + Game.time;
     console.log("Spawning new upgrader: " + newName);
     console.log("Upgraders: " + upgraders.length);
