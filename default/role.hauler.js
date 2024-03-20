@@ -1,44 +1,66 @@
 const roleHauler = {
   /** @param {Creep} creep **/
   run: function(creep) {
-    // Check if the creep needs to refill energy
-    if(creep.store.getUsedCapacity() === 0) {
+    // Determine hauling state based on carried energy
+    if (creep.store.getUsedCapacity() > 0) {
+      creep.memory.hauling = true;
+    } else {
       creep.memory.hauling = false;
     }
-    if(creep.store.getFreeCapacity() > 0 && !creep.memory.hauling) {
-      // Find the storage and retrieve energy
-      var storage = creep.room.storage;
-      if(storage && storage.store[RESOURCE_ENERGY] > 0) {
-        if(creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-          creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffaa00'}});
-          creep.say("🔄 Collect"); // Added shoutout for collecting energy
+
+    // Hauling state: Deliver resources
+    if (creep.memory.hauling) {
+      // Identify priority targets for energy delivery
+      let target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+        filter: (structure) => {
+          return (structure.structureType === STRUCTURE_SPAWN ||
+                  structure.structureType === STRUCTURE_EXTENSION ||
+                  structure.structureType === STRUCTURE_TOWER) &&
+                  structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
         }
+      });
+
+      // Deliver energy to the identified target
+      if (target) {
+        if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+          creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+          creep.say("🚚 Deliver");
+        }
+      } else {
+        // Optional: Handle the case when no targets need energy
+        creep.say("✅ All Full");
       }
     } else {
-      // Set hauling to true if the creep is full
-      creep.memory.hauling = true;
-      // Prioritize spawns, extensions, then towers
-      var target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-        filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
-                       s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+      // Not hauling: Collect energy from tombstones first, then storage
+      let source = creep.pos.findClosestByPath(FIND_TOMBSTONES, {
+        filter: (t) => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0
       });
-      
-      if(!target) {
-        // If no spawn or extension needs energy, look for towers
-        target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-          filter: (s) => s.structureType == STRUCTURE_TOWER && 
-                         s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+
+      if (!source) {
+        source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+          filter: (r) => r.resourceType === RESOURCE_ENERGY
         });
       }
 
-      // Move to the target and transfer energy
-      if(target) {
-        if(creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-          creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-          creep.say("🚚 Deliver"); // Added shoutout for delivering energy
+      if (!source && creep.room.storage && creep.room.storage.store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
+        source = creep.room.storage;
+      }
+
+      if (source) {
+        if (source instanceof Resource) {
+          if (creep.pickup(source) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+            creep.say("🔄 Pickup");
+          }
+        } else {
+          if (creep.withdraw(source, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+            creep.say("🔄 Collect");
+          }
         }
       } else {
-          creep.say("⏳ Waiting"); // Added shoutout for when there's no current task
+        // Optional: Idle behavior or return to a rally point
+        creep.say("🔄 Searching");
       }
     }
   }
