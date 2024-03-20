@@ -1,6 +1,7 @@
 let roleHarvester = require("role.harvester");
 let roleUpgrader = require("role.upgrader");
 let roleBuilder = require("role.builder");
+let roleHauler = require("role.hauler");
 let towerControl = require("towerControl");
 
 module.exports.loop = function () {
@@ -41,6 +42,7 @@ module.exports.loop = function () {
     Game.creeps,
     (creep) => creep.memory.role == "builder"
   );
+  let haulers = _.filter(Game.creeps, (creep) => creep.memory.role == "hauler");
 
   for (let name in Game.creeps) {
     let creep = Game.creeps[name];
@@ -53,11 +55,51 @@ module.exports.loop = function () {
     if (creep.memory.role == "builder") {
       roleBuilder.run(creep);
     }
+    if (creep.memory.role == "hauler") {
+      roleHauler.run(creep);
+    }
   }
 
   // Add a Hauler role with CARRY and MOVE
-
+  if (haulers.length < 1) {
+    let newName = "Hauler" + Game.time;
+    console.log("Spawning new hauler: " + newName);
+    console.log("Haulers: " + haulers.length);
+    Game.spawns["Spawn1"].spawnCreep(
+      [CARRY, CARRY, CARRY, CARRY, MOVE],
+      newName,
+      {
+        memory: { role: "hauler" },
+      }
+    );
+  }
   if (harvesters.length < 10) {
+    let newName = "HarvesterBigger" + Game.time;
+    console.log("Harvesters: " + harvesters.length);
+    console.log("Spawning new harvester: " + newName);
+    Game.spawns["Spawn1"].spawnCreep(
+      [
+        WORK,
+        WORK,
+        WORK,
+        WORK,
+        WORK,
+        WORK,
+        CARRY,
+        CARRY,
+        CARRY,
+        MOVE,
+        MOVE,
+        MOVE,
+      ],
+      newName,
+      {
+        memory: { role: "harvester" },
+      }
+    );
+  }
+
+  if (harvesters.length < 5) {
     let newName = "HarvesterBig" + Game.time;
     console.log("Harvesters: " + harvesters.length);
     console.log("Spawning new harvester: " + newName);
