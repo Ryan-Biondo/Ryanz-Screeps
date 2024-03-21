@@ -105,7 +105,7 @@ module.exports.loop = function () {
       }
     );
   }
-  if (harvesters.length < 10) {
+  if (harvesters.length < 9) {
     let newName = "HarvesterBigger" + Game.time;
     console.log("Harvesters: " + harvesters.length);
     console.log("Spawning new harvester: " + newName);
