@@ -23,7 +23,7 @@ const roleHarvester = {
 
       const source = Game.getObjectById(creep.memory.sourceId);
       if (source && creep.harvest(source) === ERR_NOT_IN_RANGE) {
-        creep.moveTo(source, { visualizePathStyle: { stroke: "#ffaa00" } });
+        creep.moveTo(source, { visualizePathStyle: { stroke: "#00FF00" } }); // Light green
       }
     } else {
       // Once the creep starts delivering, clear the harvesting and movingToSource flags
@@ -50,7 +50,7 @@ const roleHarvester = {
         target &&
         creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE
       ) {
-        creep.moveTo(target, { visualizePathStyle: { stroke: "#ffffff" } });
+        creep.moveTo(target, { visualizePathStyle: { stroke: "#00BFFF" } }); // Deep sky blue
       }
     }
   },

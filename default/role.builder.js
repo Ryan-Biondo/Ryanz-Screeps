@@ -15,7 +15,7 @@ const roleBuilder = {
       if (targets.length) {
         if (creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
           creep.moveTo(targets[0], {
-            visualizePathStyle: { stroke: "#ffffff" },
+            visualizePathStyle: { stroke: "#4CFF00" }, // Bright green for building
           });
         }
       } else {
@@ -34,7 +34,7 @@ const roleBuilder = {
 
           if (creep.repair(repairs[0]) == ERR_NOT_IN_RANGE) {
             creep.moveTo(repairs[0], {
-              visualizePathStyle: { stroke: "#ffaa00" },
+              visualizePathStyle: { stroke: "#FFD700" }, // Gold for repairing
             });
           }
         }
@@ -48,7 +48,9 @@ const roleBuilder = {
         ) % sources.length;
       let source = sources[sourceIndex];
       if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-        creep.moveTo(source, { visualizePathStyle: { stroke: "#ffaa00" } });
+        creep.moveTo(source, {
+          visualizePathStyle: { stroke: "#00BFFF" }, // Deep sky blue for harvesting
+        });
       }
     }
   },
