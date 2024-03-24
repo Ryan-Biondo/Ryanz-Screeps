@@ -45,7 +45,7 @@ const roleDefender = {
       creep.moveTo(
         Game.spawns["Spawn1"].pos.x + 5,
         Game.spawns["Spawn1"].pos.y,
-        { visualizePathStyle: { stroke: "#ffffff" } }
+        { visualizePathStyle: { stroke: "#a3a3a3" } } // Grey for default
       );
     }
   },
