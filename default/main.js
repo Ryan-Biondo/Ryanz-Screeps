@@ -93,7 +93,7 @@ module.exports.loop = function () {
     );
   }
 
-  if (haulers.length < 2) {
+  if (haulers.length < 1) {
     let newName = "Hauler" + Game.time;
     console.log("Spawning new hauler: " + newName);
     console.log("Haulers: " + haulers.length);
