@@ -68,7 +68,7 @@ module.exports.loop = function () {
     }
   }
 
-  if (defenders.length < 4) {
+  if (defenders.length < 3) {
     let newName = "MeleeDefender_" + Game.time;
     console.log("Spawning new defender: " + newName);
     Game.spawns["Spawn1"].spawnCreep(
@@ -93,18 +93,18 @@ module.exports.loop = function () {
     );
   }
 
-  if (haulers.length < 1) {
-    let newName = "Hauler" + Game.time;
-    console.log("Spawning new hauler: " + newName);
-    console.log("Haulers: " + haulers.length);
-    Game.spawns["Spawn1"].spawnCreep(
-      [CARRY, CARRY, CARRY, CARRY, MOVE],
-      newName,
-      {
-        memory: { role: "hauler" },
-      }
-    );
-  }
+//   if (haulers.length < 2) {
+//     let newName = "Hauler" + Game.time;
+//     console.log("Spawning new hauler: " + newName);
+//     console.log("Haulers: " + haulers.length);
+//     Game.spawns["Spawn1"].spawnCreep(
+//       [CARRY, CARRY, CARRY, CARRY, MOVE],
+//       newName,
+//       {
+//         memory: { role: "hauler" },
+//       }
+//     );
+//   }
   if (harvesters.length < 9) {
     let newName = "HarvesterBigger" + Game.time;
     console.log("Harvesters: " + harvesters.length);
@@ -135,13 +135,9 @@ module.exports.loop = function () {
     let newName = "HarvesterBig" + Game.time;
     console.log("Harvesters: " + harvesters.length);
     console.log("Spawning new harvester: " + newName);
-    Game.spawns["Spawn1"].spawnCreep(
-      [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE],
-      newName,
-      {
-        memory: { role: "harvester" },
-      }
-    );
+    Game.spawns["Spawn1"].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], newName, {
+      memory: { role: "harvester" },
+    });
   }
 
   if (harvesters.length < 2) {
