@@ -17,16 +17,16 @@ const towerControl = {
       return;
     }
 
-    // Repair structures
-    let closestDamagedStructure = tower.pos.findClosestByRange(
-      FIND_STRUCTURES,
-      {
-        filter: (structure) => structure.hits < structure.hitsMax,
-      }
-    );
-    if (closestDamagedStructure) {
-      tower.repair(closestDamagedStructure);
-    }
+    // // Repair structures
+    // let closestDamagedStructure = tower.pos.findClosestByRange(
+    //   FIND_STRUCTURES,
+    //   {
+    //     filter: (structure) => structure.hits < structure.hitsMax,
+    //   }
+    // );
+    // if (closestDamagedStructure) {
+    //   tower.repair(closestDamagedStructure);
+    // }
   },
 };
 
