@@ -144,7 +144,7 @@ module.exports.loop = function () {
     );
   }
 
-  if (harvesters.length < 5) {
+  if (harvesters.length < 4) {
     let newName = "Harvester" + Game.time;
     console.log("Harvesters: " + harvesters.length);
     console.log("Spawning new harvester: " + newName);
